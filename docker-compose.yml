@@ -1,0 +1,13 @@
+services:
+  minecraft__server:
+    container_name: ${NAME}
+    build: .
+    ports:
+      - "${PORT}:25565"
+    volumes:
+      - ${DATADIR}:/minecraft
+    env_file:
+      - .env
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
