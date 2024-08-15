@@ -1,3 +1,7 @@
+
+DOCKER HUB IMAGE:
+	wagnerjust/minecraft:global
+
 To run the docker image without a compose:
 
 docker run -it --name minecraft-papermc -p 25568:25565 -v $(pwd)/server_data:/minecraft --env-file minecraft.env wagnerjust/minecraft:global
