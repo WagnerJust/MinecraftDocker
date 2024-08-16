@@ -10,3 +10,13 @@ docker run -it --name minecraft-papermc -p 25568:25565 -v $(pwd)/server_data:/mi
 To run with docker compose use:
 
 docker compose --env-file minecraft.env up --build
+
+
+.env File Example
+
+TYPE=PaperMC
+RAM=2048M
+PLUGINS=True
+DATADIR=./server_data
+NAME=minecraft-papermc
+PORT=25565
