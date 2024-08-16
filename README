@@ -2,6 +2,8 @@
 DOCKER HUB IMAGE:
 	justhwagner/minecraft:global
 
+REQUIRED: a plugin_urls.txt file is required, even if its blank
+
 To run the docker image without a compose:
 
 docker run -it --name minecraft-papermc-server -p 25568:25565 -v $(pwd)/server_data:/minecraft --env-file .env justhwagner/minecraft:global
@@ -19,3 +21,11 @@ PLUGINS=True
 DATADIR=./server_data
 NAME=minecraft-papermc
 PORT=25565
+
+
+
+plugin_urls.txt example:
+
+https://ci.ender.zone/job/EssentialsX/lastSuccessfulBuild/artifact/jars/EssentialsX-2.21.0-dev+110-f1a5caf.jar
+https://ci.ender.zone/job/EssentialsX/lastSuccessfulBuild/artifact/jars/EssentialsXChat-2.21.0-dev+110-f1a5caf.jar
+https://ci.ender.zone/job/EssentialsX/lastSuccessfulBuild/artifact/jars/EssentialsXSpawn-2.21.0-dev+110-f1a5caf.jar
