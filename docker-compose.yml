@@ -11,3 +11,8 @@ services:
     restart: unless-stopped
     tty: true
     stdin_open: true
+    deploy:
+      resources:
+        limits:
+          cpus: 4
+          memory: 8G

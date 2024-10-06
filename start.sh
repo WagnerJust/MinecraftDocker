@@ -46,6 +46,8 @@ fi
 #Download jar file for associated server
 download_server_jar
 
+ram_in_mb = $(R)
+
 # Start the Minecraft server
 echo "Starting Minecraft server with ${RAM} RAM..."
 exec java -Xmx${RAM} -Xms${RAM} -jar /minecraft/server.jar nogui || { echo "Failed to start Minecraft server"; exit 1; }
