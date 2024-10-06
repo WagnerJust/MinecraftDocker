@@ -3,7 +3,7 @@ FROM eclipse-temurin:21-jre-jammy
 WORKDIR /minecraft
 
 # Install wget
-RUN apt-get install -y wget && ocl-icd-libopencl1 && \
+RUN apt-get install -y wget && \
     apt-get clean
 
 
