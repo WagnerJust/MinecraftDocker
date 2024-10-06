@@ -26,7 +26,7 @@ MEMORY=6G
 plugin_urls.txt example:
 
 https://github.com/EssentialsX/Essentials/releases/download/2.20.1/EssentialsX-2.20.1.jar
-https://www.spigotmc.org/resources/clearlagg.68271/download?version=38
 https://github.com/EssentialsX/Essentials/releases/download/2.20.1/EssentialsXChat-2.20.1.jar
 https://github.com/EssentialsX/Essentials/releases/download/2.20.1/EssentialsXSpawn-2.20.1.jar
+https://hangarcdn.papermc.io/plugins/pop4959/Chunky/versions/1.4.10/PAPER/Chunky-1.4.10.jar
 https://cdn.modrinth.com/data/TpxWaIMT/versions/KkVdJRVL/lagassist-2.32.jar
