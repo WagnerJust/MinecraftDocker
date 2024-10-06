@@ -24,29 +24,9 @@ install_plugins() {
 }
 # Function to configure plugins for performance
 configure_plugins() {
-    # ClearLag configuration
-    if [ -f /minecraft/plugins/ClearLag.jar ]; then
-        mkdir -p /minecraft/plugins/ClearLag
-        cat > /minecraft/plugins/ClearLag/config.yml << EOL
-lagg:
-  auto-removal:
-    enabled: true
-    interval: 300
-    remove:
-      items: true
-      mobs: true
-      xp-orbs: true
-  chunk-unloader:
-    enabled: true
-    interval: 600
-EOL
-        echo "ClearLag configured for optimal performance."
-    else
-        echo "ClearLag not found. Skipping configuration."
-    fi
-
+   
     # LagAssist configuration
-    if [ -f /minecraft/plugins/LagAssist.jar ]; then
+    if ls /minecraft/plugins/*lagassist*.jar 1> /dev/null 2>&1; then
         mkdir -p /minecraft/plugins/LagAssist
         cat > /minecraft/plugins/LagAssist/config.yml << EOL
 performance:
@@ -66,7 +46,7 @@ EOL
     fi
 
     # Chunky configuration
-    if [ -f /minecraft/plugins/Chunky.jar ]; then
+    if ls /minecraft/plugins/*[Cc]hunky*.jar 1> /dev/null 2>&1; then
         mkdir -p /minecraft/plugins/Chunky
         cat > /minecraft/plugins/Chunky/config.yml << EOL
 chunky:
