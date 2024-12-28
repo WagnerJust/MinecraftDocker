@@ -24,8 +24,6 @@ MODS=False
 DATAPACKS=False
 
 
-
-
 plugin_urls.txt example:
 
 https://github.com/EssentialsX/Essentials/releases/download/2.20.1/EssentialsX-2.20.1.jar
@@ -33,3 +31,8 @@ https://github.com/EssentialsX/Essentials/releases/download/2.20.1/EssentialsXCh
 https://github.com/EssentialsX/Essentials/releases/download/2.20.1/EssentialsXSpawn-2.20.1.jar
 https://hangarcdn.papermc.io/plugins/pop4959/Chunky/versions/1.4.10/PAPER/Chunky-1.4.10.jar
 https://cdn.modrinth.com/data/TpxWaIMT/versions/KkVdJRVL/lagassist-2.32.jar
+
+
+datapacks_urls.txt example:
+
+https://www.planetminecraft.com/data-pack/skyblock-infinite-5989188/download/file/17056352/
