@@ -6,6 +6,7 @@ RAM=${RAM:-4G}
 PLUGINS=${PLUGINS:-False}
 MODS=${MODS:-False}
 PORT=${PORT:-25565}
+DATAPACKS=${DATAPACKS:-False}
 
 # Function to download and install plugins
 install_plugins() {
