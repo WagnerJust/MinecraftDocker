@@ -13,16 +13,15 @@ TYPES: PaperMC, Vanilla, Forge, Fabric
 .env File Example
 
 TYPE=PaperMC
-RAM=4G
+RAM=8G
 PLUGINS=True
-DATADIR=./server_data
+DATADIR=~/Minecraft/
 NAME=minecraft-papermc
 PORT=25565
-CPUS=3
-MEMORY=6G
+CPUS=7
+MEMORY=10G
 MODS=False
 DATAPACKS=False
-
 
 plugin_urls.txt example:
 
