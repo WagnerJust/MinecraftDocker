@@ -19,6 +19,8 @@ EXPOSE 25565
 # Copy the startup script and plugin URLs file
 COPY start.sh /start.sh
 COPY plugin_urls.txt /plugin_urls.txt
+COPY mods_urls.txt /mods_urls.txt
+COPY datapacks_urls.txt /datapacks_urls.txt
 
 # Ensure the startup script is executable
 RUN chmod +x /start.sh
