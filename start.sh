@@ -92,8 +92,14 @@ install_datapacks() {
             while IFS= read -r url; do
                 echo "Downloading data pack from $url..."
                 wget -O /tmp/datapack.zip "$url" -nv || { echo "Failed to download $url"; continue; }
-                echo "Unzipping data pack..."
-                unzip -o /tmp/datapack.zip -d /minecraft/world/datapacks || { echo "Failed to unzip data pack"; continue; }
+                
+                # Create a folder named after the data pack
+                DATAPACK_NAME=$(basename "$url" .zip)
+                mkdir -p "/minecraft/world/datapacks/$DATAPACK_NAME"
+                
+                echo "Unzipping data pack into /minecraft/world/datapacks/$DATAPACK_NAME..."
+                unzip -o /tmp/datapack.zip -d "/minecraft/world/datapacks/$DATAPACK_NAME" || { echo "Failed to unzip data pack"; continue; }
+                
                 echo "Data pack installed from $url."
                 rm /tmp/datapack.zip
             done < /datapacks_urls.txt
