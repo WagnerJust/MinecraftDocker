@@ -85,15 +85,23 @@ install_mods() {
 # Function to download and install data packs
 install_datapacks() {
     if [ -f /datapacks_urls.txt ]; then
-        mkdir -p /minecraft/world/datapacks
-        echo "Installing data packs..."
-        while IFS= read -r url; do
-            echo "Downloading data pack from $url..."
-            wget -P /minecraft/world/datapacks "$url" -nv || { echo "Failed to download $url"; continue; }
-        done < /datapacks_urls.txt
-        echo "Data packs installed."
-        rm /datapacks_urls.txt
-        echo "datapacks_urls.txt deleted."
+        if [ -s /datapacks_urls.txt ]; then
+            mkdir -p /minecraft/world/datapacks
+            echo "Installing data packs..."
+            while IFS= read -r url; do
+                echo "Downloading data pack from $url..."
+                wget -O /tmp/datapack.zip "$url" -nv || { echo "Failed to download $url"; continue; }
+                echo "Unzipping data pack..."
+                unzip -o /tmp/datapack.zip -d /minecraft/world/datapacks || { echo "Failed to unzip data pack"; continue; }
+                echo "Data pack installed from $url."
+                rm /tmp/datapack.zip
+            done < /datapacks_urls.txt
+            echo "Data packs installation complete."
+            rm /datapacks_urls.txt
+            echo "datapacks_urls.txt deleted."
+        else
+            echo "datapacks_urls.txt is empty. Skipping data pack installation."
+        fi
     else
         echo "No datapacks_urls.txt found. Skipping data pack installation."
     fi
