@@ -9,6 +9,7 @@ To run with docker compose use:
 docker compose up --build
 
 
+TYPES: PaperMC, Vanilla, Forge, Fabric
 .env File Example
 
 TYPE=PaperMC
@@ -19,6 +20,8 @@ NAME=minecraft-papermc
 PORT=25565
 CPUS=3
 MEMORY=6G
+MODS=False
+DATAPACKS=False
 
 
 
