@@ -3,7 +3,7 @@ FROM eclipse-temurin:21-jre-jammy
 WORKDIR /minecraft
 
 # Install wget
-RUN apt-get install -y wget && \
+RUN apt-get install -y wget unzip && \
     apt-get clean
 
 
