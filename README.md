@@ -35,3 +35,11 @@ https://cdn.modrinth.com/data/TpxWaIMT/versions/KkVdJRVL/lagassist-2.32.jar
 datapacks_urls.txt example:
 
 https://cdn.modrinth.com/data/YVMr2l79/versions/aJwN0nSk/Skyblock_Infinite_1_1_5.zip
+
+
+single_mods.urls.txt example:
+https://www.curseforge.com/minecraft/mc-mods/clumps/download/6014988
+
+modpacks_urls.txt example:
+
+https://www.curseforge.com/minecraft/modpacks/all-the-mods-9/download/6021681

@@ -27,7 +27,6 @@ install_plugins() {
 
 # Function to configure plugins for performance
 configure_plugins() {
-    # LagAssist configuration
     if ls /minecraft/plugins/*lagassist*.jar 1> /dev/null 2>&1; then
         mkdir -p /minecraft/plugins/LagAssist
         cat > /minecraft/plugins/LagAssist/config.yml << EOL
@@ -47,7 +46,6 @@ EOL
         echo "LagAssist not found. Skipping configuration."
     fi
 
-    # Chunky configuration
     if ls /minecraft/plugins/*[Cc]hunky*.jar 1> /dev/null 2>&1; then
         mkdir -p /minecraft/plugins/Chunky
         cat > /minecraft/plugins/Chunky/config.yml << EOL
@@ -66,56 +64,81 @@ EOL
     fi
 }
 
-# Function to download and install mods
-install_mods() {
-    if [ -f /mod_urls.txt ]; then
-        mkdir -p /minecraft/mods
-        echo "Installing mods..."
-        while IFS= read -r url; do
-            echo "Downloading mod from $url..."
-            wget -P /minecraft/mods "$url" -nv || { echo "Failed to download $url"; continue; }
-        done < /mod_urls.txt
-        echo "Mods installed."
-        rm /mod_urls.txt
-        echo "mod_urls.txt deleted."
-    else
-        echo "No mod_urls.txt found. Skipping mod installation."
-    fi
-}
-
-# Function to download and install data packs
-install_datapacks() {
-    if [ -f /datapacks_urls.txt ]; then
-        if [ -s /datapacks_urls.txt ]; then
-            mkdir -p /minecraft/world/datapacks
-            echo "Installing data packs..."
+# Function to download and install mods from single_mods_urls.txt
+install_single_mods() {
+    if [ -f /single_mods_urls.txt ]; then
+        if [ -s /single_mods_urls.txt ]; then
+            mkdir -p /minecraft/mods
+            echo "Installing mods from single_mods_urls.txt..."
             while IFS= read -r url; do
-                echo "Downloading data pack from $url..."
-                wget -O /tmp/datapack.zip "$url" -nv || { echo "Failed to download $url"; continue; }
-                
-                # Create a folder named after the data pack
-                DATAPACK_NAME=$(basename "$url" .zip)
-                mkdir -p "/minecraft/world/datapacks/$DATAPACK_NAME"
-                
-                echo "Unzipping data pack into /minecraft/world/datapacks/$DATAPACK_NAME..."
-                unzip -o /tmp/datapack.zip -d "/minecraft/world/datapacks/$DATAPACK_NAME" || { echo "Failed to unzip data pack"; continue; }
-                
-                echo "Data pack installed from $url."
-                rm /tmp/datapack.zip
-            done < /datapacks_urls.txt
-            echo "Data packs installation complete."
-            rm /datapacks_urls.txt
-            echo "datapacks_urls.txt deleted."
+                echo "Downloading mod from $url..."
+                wget -P /minecraft/mods "$url" -nv || { echo "Failed to download $url"; continue; }
+            done < /single_mods_urls.txt
+            echo "Mods installed from single_mods_urls.txt."
+            rm /single_mods_urls.txt
+            echo "single_mods_urls.txt deleted."
         else
-            echo "datapacks_urls.txt is empty. Skipping data pack installation."
+            echo "single_mods_urls.txt is empty. Skipping mods installation."
         fi
     else
-        echo "No datapacks_urls.txt found. Skipping data pack installation."
+        echo "No single_mods_urls.txt found. Skipping mods installation."
     fi
 }
 
+# Function to download and install modpacks from modpacks_urls.txt
+install_modpacks() {
+    if [ -f /modpacks_urls.txt ]; then
+        if [ -s /modpacks_urls.txt ]; then
+            echo "Installing modpacks from modpacks_urls.txt..."
+            while IFS= read -r url; do
+                echo "Downloading modpack from $url..."
+                wget -O /tmp/modpack.zip "$url" -nv || { echo "Failed to download $url"; continue; }
+                echo "Extracting modpack from $url..."
+                mkdir -p /minecraft
+                unzip -o /tmp/modpack.zip -d /minecraft || { echo "Failed to extract modpack"; continue; }
+                echo "Modpack installed from $url."
+                rm /tmp/modpack.zip
+            done < /modpacks_urls.txt
+            echo "Modpacks installed from modpacks_urls.txt."
+            rm /modpacks_urls.txt
+            echo "modpacks_urls.txt deleted."
+        else
+            echo "modpacks_urls.txt is empty. Skipping modpack installation."
+        fi
+    else
+        echo "No modpacks_urls.txt found. Skipping modpack installation."
+    fi
+}
+
+# Check for MODS environment variable
+echo "Checking for MODS environment variable..."
+if [ "${MODS}" = "True" ]; then
+    echo "MODS=True. Checking for modpacks and single mods..."
+
+    MODPACK_EXISTS=false
+    MODS_EXISTS=false
+
+    if [ -f /modpacks_urls.txt ] && [ -s /modpacks_urls.txt ]; then
+        MODPACK_EXISTS=true
+    fi
+
+    if [ -f /single_mods_urls.txt ] && [ -s /single_mods_urls.txt ]; then
+        MODS_EXISTS=true
+    fi
+
+    if ! $MODPACK_EXISTS && ! $MODS_EXISTS; then
+        echo "Error: MODS=True but no valid modpacks_urls.txt or single_mods_urls.txt provided."
+        exit 1
+    fi
+
+    install_modpacks
+    install_single_mods
+else
+    echo "MODS=False. Skipping mods and modpack installation."
+fi
+
 # Function to download server jar
-download_server_jar(){
+download_server_jar() {
     case "${TYPE}" in
         Vanilla)
             wget -O /minecraft/server.jar https://piston-data.mojang.com/v1/objects/59353fb40c36d304f2035d51e7d6e6baa98dc05c/server.jar || { echo "Failed to download server.jar"; exit 1; }
@@ -124,7 +147,7 @@ download_server_jar(){
             wget -O /minecraft/server.jar https://api.papermc.io/v2/projects/paper/versions/1.21.1/builds/14/downloads/paper-1.21.1-14.jar || { echo "Failed to download server.jar"; exit 1; }
             ;;
         Forge)
-            wget -O /minecraft/installer.jar https://adfoc.us/serve/sitelinks/?id=271228&url=https://maven.minecraftforge.net/net/minecraftforge/forge/1.16.5-36.2.34/forge-1.16.5-36.2.34-installer.jar || { echo "Failed to download Forge installer"; exit 1; }
+            wget -O /minecraft/installer.jar https://maven.minecraftforge.net/net/minecraftforge/forge/1.16.5-36.2.34/forge-1.16.5-36.2.34-installer.jar || { echo "Failed to download Forge installer"; exit 1; }
             java -jar /minecraft/installer.jar --installServer /minecraft || { echo "Failed to install Forge server"; exit 1; }
             ;;
         Fabric)
@@ -138,31 +161,21 @@ download_server_jar(){
     esac
 }
 
-# Check if eula.txt exists, if not create it
+# Create eula.txt if not exists
 if [ ! -f /minecraft/eula.txt ]; then
     echo "Creating eula.txt..."
     echo "eula=true" > /minecraft/eula.txt || { echo "Failed to create eula.txt"; exit 1; }
 fi
 
-# Install plugins if PLUGINS is set to True
+# Install plugins if PLUGINS=True
 if [ "${PLUGINS}" = "True" ]; then
     install_plugins
     configure_plugins
 fi
 
-# Install mods if MODS is set to True
-if [ "${MODS}" = "True" ]; then
-    install_mods
-fi
-
-# Install data packs if DATAPACKS is set to True
-if [ "${DATAPACKS}" = "True" ]; then
-    install_datapacks
-fi
-
-# Download jar file for associated server
+# Download server jar if required
 download_server_jar
 
-# Start the Minecraft server
+# Start the server
 echo "Starting Minecraft server (${TYPE}) with ${RAM} RAM on port ${PORT}..."
 exec java -Xmx${RAM} -Xms${RAM} -jar /minecraft/server.jar nogui || { echo "Failed to start Minecraft server"; exit 1; }
